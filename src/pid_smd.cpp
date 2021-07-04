@@ -4,7 +4,7 @@ namespace pid_smd
 {
 
 pidSMDSystem::pidSMDSystem(){
-	std::cout << "[pidSMDSystem constructor] Class object created" << std::endl;
+	std::cout << "[pidSMDSystem constructor] Class object created with default values" << std::endl;
 }
 
 pidSMDSystem::pidSMDSystem(double kp_, double ki_, double kd_)
@@ -19,6 +19,8 @@ pidSMDSystem::pidSMDSystem(double kp_, double ki_, double kd_)
 	this->sampling_time = 0.01; //in seconds
 	this->system_max = 1.0;
 	this->system_min = 0.0;
+	printf("[pidSMDSystem constructor] Class object created gain values kp: %lf ki: %f kd: %lf \n"
+																, this->kp, this->ki, this->kd);
 }
 
 void pidSMDSystem::setGainValues(double new_kp, double new_ki, double new_kd){
@@ -98,7 +100,7 @@ double pidSMDSystem::pidUpdate(double set_pt, double measurement){
         this->prev_integrator = this->min_int_limit;
     }
 
-	//Derivative (band-limited prev_differentiator)
+	//Derivative
     this->prev_differentiator = -(2.0f * this->kd * (measurement - this->prev_measurement)	
                         + (2.0f * this->tau - this->sampling_time) * this->prev_differentiator)/ (2.0f * this->tau + this->sampling_time);
 
